@@ -41,4 +41,40 @@ def choisir_mot(fichier="mots_pendu.txt"):
 
     return random.choice(mots_par_defaut)
 
-d
+def demander_lettre(lettres_devinees):
+    """
+    Demande à l'utilisateur une lettre valide :
+    - une seule lettre
+    - un caractère alphabétique
+    - non déjà proposé
+    Supprime les accents pour standardiser les réponses.
+    """
+    while True:
+        proposition = enlever_accents(input("Entrez une lettre : ").lower())
+        if len(proposition) != 1:
+            print("Veuillez entrer une seule lettre.")
+        elif not proposition.isalpha():
+            print("Veuillez entrer un caractère alphabétique.")
+        elif proposition in lettres_devinees:
+            print("Vous avez déjà deviné cette lettre. Essayez-en une autre.")
+        else:
+            return proposition
+
+def donner_indice(mot, lettres_devinees, chances_restantes):
+    """
+    BONUS : Donne une lettre qui ne se trouve PAS dans le mot.
+    Cela aide le joueur à éliminer des possibilités.
+    """
+    if chances_restantes > 0:
+        lettres_possibles = "abcdefghijklmnopqrstuvwxyz"
+        lettres_disponibles = []
+        for lettre in lettres_possibles:
+            if lettre not in mot and lettre not in lettres_devinees:
+                lettres_disponibles.append(lettre)
+        if lettres_disponibles:
+            indice = random.choice(lettres_disponibles)
+            print(f"Indice : La lettre '{indice}' N'EST PAS dans le mot.")
+            return indice
+        else:
+            print("Désolé, aucun indice disponible pour le moment.")
+    return None
